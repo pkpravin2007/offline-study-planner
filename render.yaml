@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: offline-study-planner
+    runtime: node
+    plan: starter
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: 24.21.0
+      - key: NODE_ENV
+        value: production
+      - key: STUDY_PLANNER_DB
+        value: /var/data/studyplanner.db
+    disk:
+      name: studyplanner-data
+      mountPath: /var/data
+      sizeGB: 1

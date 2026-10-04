@@ -1,0 +1,19 @@
+{
+  "id": "/",
+  "name": "StudyFlow Offline Study Planner",
+  "short_name": "StudyFlow",
+  "description": "Plan tasks, exams, and focus sessions privately on your device.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f6f7fb",
+  "theme_color": "#3157d5",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

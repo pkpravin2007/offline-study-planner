@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#3157d5">
+    <meta name="description" content="Organize study tasks, exams, focus sessions, and weekly goals in one responsive study planner.">
+    <meta name="robots" content="index,follow">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="StudyFlow — Offline Study Planner">
+    <meta property="og:description" content="Organize study tasks, exams, focus sessions, and weekly goals in one planner.">
+    <meta name="twitter:card" content="summary">
+    <title>StudyFlow — Offline Study Planner</title>
+    <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/enhancements.css">
+  </head>
+  <body>
+    <header>
+      <a class="brand" href="/" aria-label="StudyFlow home">
+        <span class="logo">✦</span>
+        <span>Study<span class="blue">Flow</span><small>OFFLINE STUDY PLANNER</small></span>
+      </a>
+      <div class="header-actions">
+        <button id="reminders" class="outline compact" type="button">Enable reminders</button>
+        <span class="status"><i></i><span id="status">Connecting…</span></span>
+      </div>
+    </header>
+
+    <main>
+      <section class="welcome">
+        <div>
+          <p class="eyebrow">YOUR PERSONAL STUDY SPACE</p>
+          <h1>Make today <span class="blue">count.</span></h1>
+          <p class="muted">Plan a little. Focus a lot. Keep your learning on track.</p>
+        </div>
+        <div class="datebox">📅 <div><b id="weekday">Today</b><small id="today"></small></div></div>
+      </section>
+
+      <section class="stats" aria-label="Study overview">
+        <article><span class="bubble purple">▤</span><div><small>Total tasks</small><b id="total">0</b></div></article>
+        <article><span class="bubble green">✓</span><div><small>Completed</small><b id="completed">0</b></div></article>
+        <article><span class="bubble orange">◷</span><div><small>Pending</small><b id="pending">0</b></div></article>
+        <article class="progress">
+          <div class="progresshead"><small>Task progress</small><b id="percent">0%</b></div>
+          <div class="track"><div id="bar"></div></div>
+          <small id="progressText">Every small step matters.</small>
+        </article>
+      </section>
+
+      <section class="tools-grid">
+        <article class="panel focus-panel">
+          <div class="panelhead"><div><p class="eyebrow">DEEP WORK</p><h2>Focus timer</h2></div><span class="bubble purple">◷</span></div>
+          <div id="timer" class="timer" role="timer" aria-live="polite">25:00</div>
+          <label class="inline-field" for="focusDuration">Session length
+            <select id="focusDuration"><option value="25">25 minutes</option><option value="45">45 minutes</option><option value="50">50 minutes</option><option value="60">60 minutes</option></select>
+          </label>
+          <label class="inline-field" for="focusSubject">Study subject
+            <input id="focusSubject" list="subjectOptions" maxlength="60" placeholder="Choose or type a subject">
+          </label>
+          <div class="timer-actions">
+            <button id="timerStart" class="primary" type="button">Start focus</button>
+            <button id="timerPause" class="outline" type="button" disabled>Pause</button>
+            <button id="timerReset" class="outline" type="button">Reset</button>
+          </div>
+          <p id="timerStatus" class="hint">A completed focus session is saved to your study report.</p>
+        </article>
+
+        <article class="panel goal-panel">
+          <div class="panelhead"><div><p class="eyebrow">BUILD A HABIT</p><h2>Weekly study goal</h2></div><span class="bubble green">↗</span></div>
+          <p class="goal-value"><b id="weeklyTime">0 min</b><span id="weeklyGoalLabel">of 10 hours</span></p>
+          <div class="track"><div id="goalBar"></div></div>
+          <p class="hint" id="goalHint">Set a goal that works for you.</p>
+          <form id="goalForm" class="goal-form">
+            <label for="weeklyGoal">Goal (hours per week)</label>
+            <div><input id="weeklyGoal" type="number" min="1" max="168" step="0.5" required><button class="outline" type="submit">Save goal</button></div>
+          </form>
+          <p class="streak"><span>🔥</span> <b id="streak">0 day</b> study streak</p>
+        </article>
+      </section>
+
+      <section class="panel calendar-panel">
+        <div class="panelhead">
+          <div><p class="eyebrow">SEE WHAT'S AHEAD</p><h2>Study calendar</h2></div>
+          <div class="calendar-controls"><button id="prevMonth" class="outline compact" type="button" aria-label="Previous month">‹</button><b id="monthLabel"></b><button id="nextMonth" class="outline compact" type="button" aria-label="Next month">›</button></div>
+        </div>
+        <div class="calendar-layout">
+          <div class="calendar-grid" id="calendar"></div>
+          <div class="day-agenda"><h3 id="agendaTitle">Select a day</h3><div id="agenda"></div></div>
+        </div>
+      </section>
+
+      <section class="grid">
+        <div class="panel">
+          <div class="panelhead">
+            <div><p class="eyebrow">STAY ON TRACK</p><h2>Your study tasks</h2></div>
+            <button class="primary" id="add" type="button">＋ Add task</button>
+          </div>
+          <div class="filters">
+            <input id="search" placeholder="Search tasks, topics or subjects…" type="search" aria-label="Search tasks">
+            <select id="subjectFilter" aria-label="Filter by subject"><option value="all">All subjects</option></select>
+            <select id="statusFilter" aria-label="Filter by completion"><option value="all">All tasks</option><option value="pending">Pending</option><option value="completed">Completed</option></select>
+          </div>
+          <div id="tasks" class="tasks"></div>
+          <div id="empty" class="empty"><span>✎</span><h3>No tasks found</h3><p>Add a study task to get started.</p><button class="primary" id="emptyAdd" type="button">Create a task</button></div>
+        </div>
+
+        <aside class="panel">
+          <div class="panelhead"><div><p class="eyebrow">QUICK NOTE</p><h2>Study notes</h2></div><span class="bubble purple">✎</span></div>
+          <p class="muted">Notes save in your local SQLite database.</p>
+          <textarea id="notes" rows="7" maxlength="10000" placeholder="Remember to revise Unit 2…"></textarea>
+          <small id="noteStatus">Loading notes…</small>
+          <div class="tip">💡 <div><b>Study tip</b><p>Try a 25-minute focus session, then take a short break.</p></div></div>
+          <button class="outline full" id="export" type="button">⇩ Export full backup (JSON)</button>
+          <label class="outline full import">⇧ Import backup (JSON)<input id="import" type="file" accept=".json,application/json" hidden></label>
+          <button class="textbutton" id="clear" type="button">Clear completed tasks</button>
+          <div class="subject-manager">
+            <h3>My subjects</h3>
+            <form id="subjectForm"><label class="sr-only" for="newSubject">New subject</label><input id="newSubject" maxlength="60" placeholder="Add a subject"><button class="outline" type="submit">Add</button></form>
+            <div id="subjects" class="subject-list"></div>
+          </div>
+        </aside>
+      </section>
+
+      <section class="panel exams-panel">
+        <div class="panelhead"><div><p class="eyebrow">PREPARE WITH CONFIDENCE</p><h2>Exam timetable</h2></div><button class="primary" id="addExam" type="button">＋ Add exam</button></div>
+        <div id="exams" class="exam-list"></div>
+        <p id="examEmpty" class="muted">No upcoming exams added yet.</p>
+      </section>
+
+      <section class="panel report-panel">
+        <div class="panelhead"><div><p class="eyebrow">YOUR CONSISTENCY</p><h2>Seven-day study report</h2></div><span class="bubble orange">▥</span></div>
+        <div id="reportChart" class="report-chart" role="img" aria-label="Study minutes for the last seven days"></div>
+      </section>
+      <datalist id="subjectOptions"></datalist>
+      <footer>StudyFlow · Private local SQLite storage · Works without internet on this device</footer>
+    </main>
+
+    <dialog id="dialog">
+      <form id="form">
+        <div class="dialoghead"><div><p class="eyebrow">BUILD YOUR PLAN</p><h2 id="dialogTitle">Add a study task</h2></div><button id="close" type="button" class="close" aria-label="Close">×</button></div>
+        <input id="taskId" type="hidden">
+        <label>Task title *<input id="title" required maxlength="120" placeholder="e.g. Revise database normalization"></label>
+        <div class="row"><label>Subject<input id="subject" list="subjectOptions" maxlength="60" placeholder="e.g. DBMS"></label><label>Topic<input id="topic" maxlength="80" placeholder="e.g. Normal forms"></label></div>
+        <div class="row"><label>Priority<select id="priority"><option value="medium">Medium</option><option value="high">High</option><option value="low">Low</option></select></label><label>Repeat<select id="recurrence"><option value="none">Does not repeat</option><option value="daily">Daily</option><option value="weekly">Weekly</option><option value="monthly">Monthly</option></select></label></div>
+        <div class="row"><label>Due date<input id="date" type="date"></label><label>Study time<input id="time" type="time"></label></div>
+        <label>Notes (optional)<textarea id="details" rows="3" maxlength="500"></textarea></label>
+        <div class="dialogactions"><button type="button" id="cancel" class="outline">Cancel</button><button class="primary">Save task</button></div>
+      </form>
+    </dialog>
+
+    <dialog id="examDialog">
+      <form id="examForm">
+        <div class="dialoghead"><div><p class="eyebrow">EXAM PREPARATION</p><h2 id="examDialogTitle">Add an exam</h2></div><button id="examClose" type="button" class="close" aria-label="Close">×</button></div>
+        <input id="examId" type="hidden">
+        <label>Exam name *<input id="examTitle" required maxlength="120" placeholder="e.g. Semester mathematics"></label>
+        <div class="row"><label>Subject<input id="examSubject" list="subjectOptions" maxlength="60"></label><label>Date *<input id="examDate" type="date" required></label></div>
+        <div class="row"><label>Time<input id="examTime" type="time"></label><label>Topics to revise<input id="examDetails" maxlength="500" placeholder="Chapters or notes"></label></div>
+        <div class="dialogactions"><button type="button" id="examCancel" class="outline">Cancel</button><button class="primary">Save exam</button></div>
+      </form>
+    </dialog>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="/app.js" defer></script>
+  </body>
+</html>
