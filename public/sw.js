@@ -1,10 +1,11 @@
-const CACHE_NAME = "studyflow-shell-v1";
+const CACHE_NAME = "studyflow-shell-v24";
 const SHELL_FILES = [
   "/",
   "/index.html",
-  "/style.css",
-  "/enhancements.css",
-  "/app.js",
+  "/style.css?v=13",
+  "/enhancements.css?v=19",
+  "/study-plan-engine.js?v=4",
+  "/app.js?v=25",
   "/manifest.webmanifest",
   "/icon.svg"
 ];

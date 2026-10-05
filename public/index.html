@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#3157d5">
+    <meta name="theme-color" content="#f4f6fb">
     <meta name="description" content="Organize study tasks, exams, focus sessions, and weekly goals in one responsive study planner.">
     <meta name="robots" content="index,follow">
     <meta property="og:type" content="website">
@@ -13,46 +13,467 @@
     <title>StudyFlow — Offline Study Planner</title>
     <link rel="manifest" href="/manifest.webmanifest">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="/style.css">
-    <link rel="stylesheet" href="/enhancements.css">
+    <link rel="stylesheet" href="/style.css?v=13">
+    <link rel="stylesheet" href="/enhancements.css?v=19">
   </head>
   <body>
-    <header>
-      <a class="brand" href="/" aria-label="StudyFlow home">
-        <span class="logo">✦</span>
-        <span>Study<span class="blue">Flow</span><small>OFFLINE STUDY PLANNER</small></span>
+    <div class="ambient ambient-purple" aria-hidden="true"></div>
+    <div class="ambient ambient-cyan" aria-hidden="true"></div>
+
+    <aside class="sidebar" aria-label="StudyFlow workspace">
+      <a class="brand" href="#dashboard" aria-label="StudyFlow dashboard">
+        <span class="logo" aria-hidden="true">✦</span>
+        <span class="brand-copy">Study<span class="brand-accent">Flow</span><small>YOUR STUDY SPACE</small></span>
       </a>
+      <p class="sidebar-label">WORKSPACE</p>
+      <button class="nav-menu-toggle" id="navMenuToggle" type="button" aria-expanded="false" aria-controls="mainNav" aria-label="Open navigation menu"><span aria-hidden="true">☰</span><span>Menu</span></button>
+      <nav class="main-nav" id="mainNav" aria-label="Main navigation">
+        <a class="nav-link active" href="#dashboard" data-section-link data-section-name="Dashboard" aria-current="page"><span class="nav-icon" aria-hidden="true">⌂</span><span>Dashboard</span></a>
+        <a class="nav-link" href="#subjects-panel" data-section-link data-section-name="My Subjects"><span class="nav-icon" aria-hidden="true">▤</span><span>My Subjects</span></a>
+        <a class="nav-link" href="#syllabus-panel" data-section-link data-section-name="Syllabus & Progress"><span class="nav-icon" aria-hidden="true">◫</span><span>Syllabus &amp; Progress</span></a>
+        <a class="nav-link" href="#materials-panel" data-section-link data-section-name="Study Tools"><span class="nav-icon" aria-hidden="true">▧</span><span>Study Tools</span></a>
+        <a class="nav-link" href="#ai-monitor-panel" data-section-link data-section-name="AI Study Monitor"><span class="nav-icon" aria-hidden="true">✧</span><span>AI Study Monitor</span></a>
+        <a class="nav-link" href="#planner-panel" data-section-link data-section-name="Daily Timetable"><span class="nav-icon" aria-hidden="true">✧</span><span>Daily Timetable</span></a>
+        <a class="nav-link" href="#exams-panel" data-section-link data-section-name="Exam Countdown"><span class="nav-icon" aria-hidden="true">◷</span><span>Exam Countdown</span></a>
+        <a class="nav-link" href="#notes-panel" data-section-link data-section-name="Notes"><span class="nav-icon" aria-hidden="true">✎</span><span>Notes</span></a>
+        <a class="nav-link" href="#focus-panel" data-section-link data-section-name="Focus Timer"><span class="nav-icon" aria-hidden="true">◉</span><span>Focus Timer</span></a>
+        <a class="nav-link" href="#academic-panel" data-section-link data-section-name="Settings"><span class="nav-icon" aria-hidden="true">⚙</span><span>Settings</span></a>
+      </nav>
+      <div class="sidebar-bottom">
+        <span class="sidebar-status-mark" aria-hidden="true">✦</span>
+        <span><b>Your space, your pace</b><small>Small steps add up.</small></span>
+      </div>
+    </aside>
+
+    <div class="app-shell">
+    <header class="topbar">
+      <div class="page-heading"><p class="eyebrow">STUDY WORKSPACE</p><h2 id="pageTitle">Dashboard</h2></div>
       <div class="header-actions">
+        <div class="header-date"><b id="weekday">Today</b><small id="today"></small></div>
+        <a class="header-profile" id="headerProfile" href="#academic-panel"><span class="header-avatar" aria-hidden="true">◎</span><span><b id="headerProfileTitle">Student profile</b><small id="headerProfileDetail">Set up your study space</small></span></a>
         <button id="reminders" class="outline compact" type="button">Enable reminders</button>
-        <span class="status"><i></i><span id="status">Connecting…</span></span>
+        <span class="status" role="status"><i aria-hidden="true"></i><span id="status">Connecting…</span></span>
       </div>
     </header>
 
-    <main>
+    <main id="dashboard" class="dashboard">
       <section class="welcome">
         <div>
           <p class="eyebrow">YOUR PERSONAL STUDY SPACE</p>
-          <h1>Make today <span class="blue">count.</span></h1>
-          <p class="muted">Plan a little. Focus a lot. Keep your learning on track.</p>
+          <h1>Welcome back, <span id="greetingName" class="gradient-text">there</span>.</h1>
+          <p class="muted">A little progress every day adds up to big results.</p>
         </div>
-        <div class="datebox">📅 <div><b id="weekday">Today</b><small id="today"></small></div></div>
+        <div class="welcome-actions">
+          <div class="welcome-summary glass">
+            <span class="date-icon" aria-hidden="true">✦</span>
+            <div><b>Today's focus</b><small id="todaySummary">Loading your study summary…</small></div>
+          </div>
+          <a class="primary continue-button" href="#planner-panel">Continue studying <span aria-hidden="true">→</span></a>
+        </div>
       </section>
 
-      <section class="stats" aria-label="Study overview">
-        <article><span class="bubble purple">▤</span><div><small>Total tasks</small><b id="total">0</b></div></article>
-        <article><span class="bubble green">✓</span><div><small>Completed</small><b id="completed">0</b></div></article>
-        <article><span class="bubble orange">◷</span><div><small>Pending</small><b id="pending">0</b></div></article>
-        <article class="progress">
-          <div class="progresshead"><small>Task progress</small><b id="percent">0%</b></div>
-          <div class="track"><div id="bar"></div></div>
-          <small id="progressText">Every small step matters.</small>
+      <section class="stats dashboard-stats" aria-label="Study overview">
+        <article class="stat-card glass">
+          <span class="bubble purple" aria-hidden="true">◷</span>
+          <div><small>Today's study target</small><b id="dailyTargetMetric">—</b><span id="dailyTargetCaption" class="stat-caption">from your saved plan</span></div>
+        </article>
+        <article class="stat-card glass">
+          <span class="bubble green" aria-hidden="true">◫</span>
+          <div><small>Remaining topics</small><b id="remainingTopicsMetric">—</b><span class="stat-caption">in your saved syllabus</span></div>
+        </article>
+        <article class="stat-card glass">
+          <span class="bubble purple" aria-hidden="true">↻</span>
+          <div><small>Topics needing revision</small><b id="revisionTopicsMetric">—</b><span class="stat-caption">marked by you</span></div>
+        </article>
+        <article class="stat-card glass">
+          <span class="bubble purple" aria-hidden="true">◴</span>
+          <div><small>Upcoming exam</small><b id="upcomingExamMetric">—</b><span id="upcomingExamCaption" class="stat-caption">from your saved calendar</span></div>
+        </article>
+        <article class="stat-card glass">
+          <span class="bubble cyan" aria-hidden="true">◴</span>
+          <div><small>Study time today</small><b id="studyTimeMetric">—</b><span class="stat-caption">from completed sessions</span></div>
+        </article>
+        <article class="stat-card glass">
+          <span class="bubble green" aria-hidden="true">✓</span>
+          <div><small>Quiz/Practice Accuracy</small><b id="quizPerformanceMetric">—</b><span id="quizPerformanceCaption" class="stat-caption">from answered questions</span></div>
+        </article>
+        <article class="stat-card glass">
+          <span class="bubble cyan" aria-hidden="true">▤</span>
+          <div><small>Overall syllabus progress</small><b id="syllabusMetric">—</b><span id="syllabusMetricCaption" class="stat-caption">from saved topics</span></div>
         </article>
       </section>
 
-      <section class="tools-grid">
-        <article class="panel focus-panel">
-          <div class="panelhead"><div><p class="eyebrow">DEEP WORK</p><h2>Focus timer</h2></div><span class="bubble purple">◷</span></div>
-          <div id="timer" class="timer" role="timer" aria-live="polite">25:00</div>
+      <section id="accuracy-panel" class="panel glass accuracy-panel" aria-labelledby="accuracyTitle">
+        <div class="panelhead">
+          <div><p class="eyebrow">CALCULATED FROM COMPLETED SAVED QUIZZES</p><h2 id="accuracyTitle">Quiz/Practice Accuracy</h2></div>
+          <span class="bubble green" aria-hidden="true">✓</span>
+        </div>
+        <p class="accuracy-disclaimer">This reflects answers saved in completed practice quizzes only. It is a practice measure, not a measure of complete knowledge or intelligence. Answer-level tracking starts with quizzes completed after this feature is added; earlier saved score-only attempts are not included.</p>
+        <div class="accuracy-overview">
+          <article class="accuracy-overall"><small>Overall Accuracy</small><b id="overallAccuracyValue">—</b><span id="overallAccuracyCount">No saved answers yet</span></article>
+          <article class="accuracy-overall"><small>Correct Answers</small><b id="accuracyCorrectCount">0</b><span>of submitted answers</span></article>
+          <article class="accuracy-overall"><small>Incorrect Answers</small><b id="accuracyIncorrectCount">0</b><span>of submitted answers</span></article>
+          <article class="accuracy-overall"><small>Progress vs previous quiz</small><b id="accuracyTrendValue">—</b><span id="accuracyTrendCaption">Complete two quizzes to compare</span></article>
+        </div>
+        <div class="accuracy-breakdown-grid">
+          <article class="accuracy-card"><div class="materials-card-head"><div><p class="eyebrow">BY SUBJECT</p><h3>Subject Accuracy</h3></div></div><div id="subjectAccuracyList" class="accuracy-list"></div></article>
+          <article class="accuracy-card"><div class="materials-card-head"><div><p class="eyebrow">BY SAVED TOPIC</p><h3>Topic Accuracy</h3></div></div><div id="topicAccuracyList" class="accuracy-list"></div></article>
+          <article class="accuracy-card"><div class="materials-card-head"><div><p class="eyebrow">LATEST SAVED QUIZZES</p><h3>Recent Performance</h3></div></div><div id="recentAccuracyList" class="accuracy-list"></div></article>
+          <article class="accuracy-card"><div class="materials-card-head"><div><p class="eyebrow">AT LEAST THREE ANSWERS · ABOVE 75%</p><h3>Strong Topics</h3></div></div><div id="strongTopicsList" class="accuracy-list"></div></article>
+          <article class="accuracy-card accuracy-practice-card"><div class="materials-card-head"><div><p class="eyebrow">BASED ON MISSED ANSWERS AND ACCURACY</p><h3>Topics Needing More Practice</h3></div></div><div id="practiceTopicsList" class="accuracy-list"></div></article>
+        </div>
+      </section>
+
+      <section id="ai-monitor-card" class="panel glass ai-monitor-card" aria-labelledby="aiMonitorCardTitle">
+        <div class="panelhead">
+          <div><p class="eyebrow">LOCAL STUDY ACTIVITY ANALYSIS</p><h2 id="aiMonitorCardTitle">AI Study Monitor</h2><p class="muted">Recommendations are generated locally from your study activity.</p></div>
+          <span id="aiMonitorCardStatus" class="ai-monitor-status">Loading status…</span>
+        </div>
+        <div class="ai-monitor-card-metrics">
+          <article><small>Study time today</small><b id="aiMonitorCardStudy">—</b></article>
+          <article><small>Today's target</small><b id="aiMonitorCardTarget">—</b></article>
+          <article><small>Syllabus progress</small><b id="aiMonitorCardSyllabus">—</b></article>
+          <article><small>Quiz / Practice Accuracy</small><b id="aiMonitorCardAccuracy">—</b></article>
+        </div>
+        <div id="aiMonitorCardRecommendation" class="ai-monitor-card-recommendation" aria-live="polite">Loading recommendations…</div>
+        <a class="primary ai-monitor-report-link" href="#ai-monitor-panel">View Full Report <span aria-hidden="true">→</span></a>
+      </section>
+
+      <section id="ai-monitor-panel" class="panel glass ai-monitor-panel" aria-labelledby="aiMonitorTitle">
+        <div class="panelhead">
+          <div><p class="eyebrow">OFFLINE AI STUDY MONITOR</p><h2 id="aiMonitorTitle">🤖 AI Study Monitor</h2><p class="muted">Your offline study assistant · Recommendations use locally saved study activity only.</p></div>
+          <span id="aiMonitorStatus" class="ai-monitor-status">Loading status…</span>
+        </div>
+        <p class="ai-monitor-privacy">No online AI, external service, webcam, or microphone is used. Quiz / Practice Accuracy describes saved quiz answers only; it does not measure complete knowledge or intelligence.</p>
+        <div class="ai-monitor-overview">
+          <article><small>Today's study time</small><b id="aiMonitorStudyTime">—</b></article>
+          <article><small>Today's target</small><b id="aiMonitorTarget">—</b></article>
+          <article><small>Syllabus completion</small><b id="aiMonitorSyllabus">—</b></article>
+          <article><small>Quiz / Practice Accuracy</small><b id="aiMonitorAccuracy">—</b></article>
+          <article><small>Upcoming exam</small><b id="aiMonitorExam">—</b></article>
+          <article><small>Topics needing attention</small><b id="aiMonitorAttentionCount">—</b></article>
+        </div>
+        <div class="ai-monitor-content">
+          <section class="ai-monitor-recommendations" aria-labelledby="aiRecommendationsTitle">
+            <div class="materials-card-head"><div><p class="eyebrow">PROBLEM · WHY · NEXT ACTION</p><h3 id="aiRecommendationsTitle">Study recommendations</h3></div></div>
+            <div id="aiMonitorRecommendations" class="ai-monitor-recommendation-list" aria-live="polite"></div>
+          </section>
+          <section class="ai-monitor-report" aria-labelledby="aiDailyReportTitle">
+            <div class="materials-card-head"><div><p class="eyebrow">GENERATED FROM SAVED ACTIVITY</p><h3 id="aiDailyReportTitle">Today's Study Report</h3></div></div>
+            <div id="aiMonitorDailyReport" class="ai-monitor-daily-report" aria-live="polite"></div>
+            <div class="ai-monitor-topic-lists">
+              <div><h4>Strong topics</h4><div id="aiMonitorStrongTopics"></div></div>
+              <div><h4>Topics needing more practice</h4><div id="aiMonitorWeakTopics"></div></div>
+            </div>
+            <div class="ai-monitor-topic-lists"><div><h4>Recently studied topics</h4><div id="aiMonitorRecentTopics"></div></div></div>
+          </section>
+        </div>
+      </section>
+
+      <section id="dashboardRevisionPanel" class="panel glass dashboard-revision" aria-labelledby="dashboardRevisionTitle">
+        <div class="panelhead"><div><p class="eyebrow">YOUR REVISION QUEUE</p><h2 id="dashboardRevisionTitle">Topics marked Need Revision</h2></div><a class="subtle-link" href="#syllabus-panel">Update syllabus <span aria-hidden="true">→</span></a></div>
+        <div id="dashboardRevisionTopics" class="dashboard-revision-list"></div>
+      </section>
+
+      <section id="academic-panel" class="academic-grid" aria-labelledby="academicTitle">
+        <article class="panel glass profile-panel">
+          <div class="panelhead">
+            <div><p class="eyebrow">PERSONALIZE YOUR PLAN</p><h2 id="academicTitle">Student profile</h2></div>
+            <span class="bubble purple" aria-hidden="true">◎</span>
+          </div>
+          <p class="muted profile-intro">Set your school or college details and daily study availability. Your profile is saved on this device.</p>
+          <form id="profileForm">
+            <div class="profile-fields profile-common">
+              <label for="educationLevel">Education level
+                <select id="educationLevel" required>
+                  <option value="">Choose school or college</option>
+                  <option value="school">School</option>
+                  <option value="college">College</option>
+                </select>
+              </label>
+            </div>
+            <div id="schoolProfileFields" class="profile-fields" hidden>
+              <label for="classLevel">Class
+                <select id="classLevel" required disabled>
+                  <option value="">Choose class</option>
+                  <option value="6">Class 6</option><option value="7">Class 7</option>
+                  <option value="8">Class 8</option><option value="9">Class 9</option>
+                  <option value="10">Class 10</option><option value="11">Class 11</option>
+                  <option value="12">Class 12</option>
+                </select>
+              </label>
+            </div>
+            <div id="collegeProfileFields" class="profile-fields college-fields" hidden>
+              <label for="course">Course / degree
+                <input id="course" type="text" maxlength="80" placeholder="e.g. BCA, B.Sc. Computer Science" required disabled>
+              </label>
+              <label for="department">Department <span class="optional-label">Optional</span>
+                <input id="department" type="text" maxlength="80" placeholder="e.g. Computer Applications" disabled>
+              </label>
+              <label for="yearOfStudy">Year of study
+                <select id="yearOfStudy" required disabled>
+                  <option value="">Choose year</option>
+                  <option value="1">Year 1</option><option value="2">Year 2</option>
+                  <option value="3">Year 3</option><option value="4">Year 4</option>
+                  <option value="5">Year 5</option><option value="6">Year 6</option>
+                  <option value="7">Year 7</option><option value="8">Year 8</option>
+                </select>
+              </label>
+              <label for="semester">Semester <span class="optional-label">Optional</span>
+                <select id="semester" disabled>
+                  <option value="">Not set</option>
+                  <option value="1">Semester 1</option><option value="2">Semester 2</option>
+                  <option value="3">Semester 3</option><option value="4">Semester 4</option>
+                  <option value="5">Semester 5</option><option value="6">Semester 6</option>
+                  <option value="7">Semester 7</option><option value="8">Semester 8</option>
+                  <option value="9">Semester 9</option><option value="10">Semester 10</option>
+                  <option value="11">Semester 11</option><option value="12">Semester 12</option>
+                  <option value="13">Semester 13</option><option value="14">Semester 14</option>
+                  <option value="15">Semester 15</option><option value="16">Semester 16</option>
+                </select>
+              </label>
+            </div>
+            <div class="profile-fields">
+              <label for="availableHours">Available study time per day
+                <span class="input-suffix"><input id="availableHours" type="number" min="0.5" max="16" step="0.5" value="2" required><span>hours / day</span></span>
+              </label>
+            </div>
+            <div class="profile-actions">
+              <button id="saveProfile" class="primary" type="submit">Save profile</button>
+              <span id="profileStatus" role="status" aria-live="polite">No profile saved yet.</span>
+            </div>
+          </form>
+        </article>
+
+        <article id="subjects-panel" class="panel glass subject-setup-panel">
+          <div class="panelhead"><div><p class="eyebrow">YOUR LEARNING</p><h2>Subjects</h2></div><span class="bubble cyan" aria-hidden="true">▤</span></div>
+          <p class="muted">Add subjects to reuse in tasks, exams, and focus sessions.</p>
+          <div class="subject-manager">
+            <form id="subjectForm"><label class="sr-only" for="newSubject">New subject</label><input id="newSubject" maxlength="60" placeholder="e.g. Mathematics"><button class="outline" type="submit">Add</button></form>
+            <p id="subjectSetupEmpty" class="empty-copy" hidden>No subjects yet. Add one to get started.</p>
+            <div id="subjects" class="subject-list"></div>
+          </div>
+          <div class="exam-shortcut"><span class="bubble purple" aria-hidden="true">▦</span><span><b>Exam dates</b><small>Add dates and they appear in your calendar.</small></span><a class="outline compact" href="#exams-panel">Manage</a></div>
+        </article>
+      </section>
+
+      <section id="syllabus-panel" class="panel glass syllabus-panel" aria-labelledby="syllabusTitle">
+        <div class="panelhead syllabus-heading">
+          <div><p class="eyebrow">LEARN AT YOUR PACE</p><h2 id="syllabusTitle">Syllabus &amp; progress</h2><p class="muted syllabus-description">Build your own subject, chapter, and topic list. Progress is calculated from the topics you save.</p></div>
+          <span class="bubble purple" aria-hidden="true">◫</span>
+        </div>
+        <div id="syllabusLoading" class="loading-state">Loading your saved syllabus…</div>
+        <div id="syllabusError" class="syllabus-message error-message" role="alert" hidden></div>
+        <div id="syllabusContent" hidden>
+          <div class="syllabus-overview">
+            <article class="syllabus-stat"><small>Topics completed</small><b id="syllabusCompletedTopics">0 / 0</b><span id="syllabusRemainingTopics">Add topics to start tracking</span></article>
+            <article class="syllabus-stat"><small>Overall syllabus progress</small><b id="syllabusOverallPercent">0%</b><div class="track" role="progressbar" aria-label="Overall syllabus progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="syllabusOverallBar"></div></div></article>
+            <article class="syllabus-stat"><small>Topics to revise</small><b id="syllabusRevisionCount">0</b><span>Marked by you for another review</span></article>
+          </div>
+          <form id="studySessionForm" class="study-session-form">
+            <div><p class="eyebrow">LOG STUDY TIME</p><h3>Record a study session</h3><p class="muted">Optionally link the time to a topic to see minutes studied there.</p></div>
+            <label for="studySubject">Subject
+              <select id="studySubject"><option value="">Choose subject</option></select>
+            </label>
+            <label for="studyTopic">Topic <span class="optional-label">Optional</span>
+              <select id="studyTopic"><option value="">General session</option></select>
+            </label>
+            <label for="studyMinutes">Minutes
+              <input id="studyMinutes" type="number" min="1" max="1440" step="1" value="25" required>
+            </label>
+            <label for="studyDate">Date
+              <input id="studyDate" type="date" required>
+            </label>
+            <button class="primary" type="submit">Save session</button>
+          </form>
+          <div id="syllabusEmpty" class="empty syllabus-empty" hidden><span aria-hidden="true">◫</span><h3>No syllabus subjects yet</h3><p>Add a subject above, then create chapters and topics from your own syllabus.</p><a class="outline" href="#subjects-panel">Add a subject</a></div>
+          <div id="syllabusSubjects" class="syllabus-subjects"></div>
+        </div>
+      </section>
+
+      <section id="planner-panel" class="panel glass planner-panel" aria-labelledby="plannerTitle">
+        <div class="panelhead">
+          <div><p class="eyebrow">MADE FROM YOUR SAVED SYLLABUS</p><h2 id="plannerTitle">Today's study plan &amp; daily timetable</h2><p class="muted planner-intro">A deterministic local schedule from your saved progress, exam dates, and daily availability. Plans stay on this device; results are never guaranteed.</p></div>
+          <span class="bubble cyan" aria-hidden="true">✧</span>
+        </div>
+        <div id="plannerSubjects" class="planner-subjects" aria-label="Subject exam dates and syllabus progress"></div>
+        <form id="plannerForm" class="planner-controls">
+          <label for="planStartDate">Start date
+            <input id="planStartDate" type="date" required>
+          </label>
+          <label for="planDays">Plan horizon
+            <select id="planDays"><option value="7">7 days</option><option value="14">14 days</option></select>
+          </label>
+          <label for="planBlockMinutes">Topic block
+            <select id="planBlockMinutes"><option value="25">25 minutes</option><option value="30" selected>30 minutes</option><option value="45">45 minutes</option><option value="60">60 minutes</option></select>
+          </label>
+          <button id="generatePlan" class="primary" type="submit">Build schedule</button>
+        </form>
+        <p id="plannerWarning" class="planner-warning" role="status" aria-live="polite" hidden></p>
+        <p id="plannerStatus" class="planner-status" role="status" aria-live="polite">Build a schedule from your saved subjects and topics. It is saved only when you choose Save schedule.</p>
+        <div id="plannerDraft" hidden>
+          <div class="planner-draft-head">
+            <div><h3>Schedule preview</h3><p id="plannerDraftSummary" class="muted"></p></div>
+            <div class="planner-save-actions"><label class="planner-select-all"><input id="planSelectAll" type="checkbox" checked><span>Select all</span></label><button id="savePlan" class="primary" type="button" disabled>Save schedule</button></div>
+          </div>
+          <div id="plannerRows" class="planner-days"></div>
+        </div>
+        <div class="saved-plan-heading"><div><h3>Saved plan · today first</h3><p id="savedPlanSummary" class="muted">Your saved study blocks and progress appear here.</p></div></div>
+        <div id="savedPlanMessage" class="planner-status" role="status" aria-live="polite" hidden></div>
+        <div id="savedPlanItems" class="planner-days"></div>
+      </section>
+
+      <section id="materials-panel" class="panel glass materials-panel" aria-labelledby="materialsTitle">
+        <div class="panelhead">
+          <div><p class="eyebrow">YOUR LOCAL LEARNING LIBRARY</p><h2 id="materialsTitle">Study Tools</h2><p class="muted materials-intro">Organize student-created materials, flashcards, revision topics, and practice questions by subject and chapter. Everything is saved on this device.</p></div>
+          <span class="bubble cyan" aria-hidden="true">▧</span>
+        </div>
+
+        <details class="materials-scope">
+          <summary>Academic material organization</summary>
+          <p class="muted">Select the education level and course context used for new materials and questions. Existing profile details are prefilled when available.</p>
+          <div class="materials-scope-fields">
+            <label for="materialEducation">Education level
+              <select id="materialEducation"><option value="school">School</option><option value="college">College</option></select>
+            </label>
+            <label id="materialClassField" for="materialClass">Class
+              <select id="materialClass"><option value="">Choose class</option><option value="6">Class 6</option><option value="7">Class 7</option><option value="8">Class 8</option><option value="9">Class 9</option><option value="10">Class 10</option><option value="11">Class 11</option><option value="12">Class 12</option></select>
+            </label>
+            <label id="materialCourseField" for="materialCourse" hidden>Course
+              <input id="materialCourse" maxlength="80" placeholder="e.g. BCA">
+            </label>
+            <label id="materialSemesterField" for="materialSemester" hidden>Semester
+              <select id="materialSemester"><option value="">Not specified</option><option value="1">Semester 1</option><option value="2">Semester 2</option><option value="3">Semester 3</option><option value="4">Semester 4</option><option value="5">Semester 5</option><option value="6">Semester 6</option><option value="7">Semester 7</option><option value="8">Semester 8</option><option value="9">Semester 9</option><option value="10">Semester 10</option><option value="11">Semester 11</option><option value="12">Semester 12</option><option value="13">Semester 13</option><option value="14">Semester 14</option><option value="15">Semester 15</option><option value="16">Semester 16</option></select>
+            </label>
+          </div>
+        </details>
+
+        <div class="materials-grid">
+          <section class="materials-card" aria-labelledby="materialFormTitle">
+            <div class="materials-card-head"><div><p class="eyebrow">STUDENT-CREATED</p><h3 id="materialFormTitle">Save study material</h3></div></div>
+            <form id="materialForm" class="materials-form">
+              <input id="materialId" type="hidden">
+              <label for="materialSubject">Subject<input id="materialSubject" list="subjectOptions" maxlength="60" required placeholder="Choose or enter subject"></label>
+              <label for="materialChapter">Chapter<input id="materialChapter" list="materialChapterOptions" maxlength="120" required placeholder="Enter chapter"></label>
+              <datalist id="materialChapterOptions"></datalist>
+              <label for="materialType">Material type<select id="materialType"><option value="notes">Notes</option><option value="summary">Summary</option><option value="text">Text material</option></select></label>
+              <label for="materialTitle">Title<input id="materialTitle" maxlength="120" required placeholder="e.g. Key ideas and definitions"></label>
+              <label for="materialContent">Text content<textarea id="materialContent" maxlength="20000" rows="6" required placeholder="Write or paste your own study material…"></textarea></label>
+              <div class="materials-form-actions"><button id="materialSave" class="primary" type="submit">Save material</button><button id="materialCancel" class="outline" type="button" hidden>Cancel edit</button><span class="materials-source-label">Student-created · not an official syllabus</span></div>
+            </form>
+            <div id="materialsList" class="materials-list"></div>
+          </section>
+
+          <section class="materials-card" aria-labelledby="checklistTitle">
+            <div class="materials-card-head"><div><p class="eyebrow">CHAPTER REVISION</p><h3 id="checklistTitle">Revision checklist</h3></div></div>
+            <form id="checklistForm" class="checklist-form">
+              <input id="checklistId" type="hidden">
+              <label for="checklistSubject">Subject<input id="checklistSubject" list="subjectOptions" maxlength="60" required placeholder="Subject"></label>
+              <label for="checklistChapter">Chapter<input id="checklistChapter" list="materialChapterOptions" maxlength="120" required placeholder="Chapter"></label>
+              <label for="checklistTitleInput">Revision step<input id="checklistTitleInput" maxlength="160" required placeholder="e.g. Review key formulas"></label>
+              <button id="checklistSave" class="outline" type="submit">Add checklist item</button><button id="checklistCancel" class="outline" type="button" hidden>Cancel</button>
+            </form>
+            <div id="checklistItems" class="checklist-items"></div>
+            <p id="checklistEmpty" class="empty-copy">Add chapter-specific revision steps to check them off as you study.</p>
+          </section>
+        </div>
+
+        <section class="materials-card flashcards-panel" aria-labelledby="flashcardsTitle">
+          <div class="materials-card-head"><div><p class="eyebrow">ACTIVE RECALL</p><h3 id="flashcardsTitle">Flashcards</h3></div><span id="flashcardProgress" class="materials-source-label">No cards yet</span></div>
+          <form id="flashcardForm" class="flashcard-form">
+            <input id="flashcardId" type="hidden">
+            <label for="flashcardSubject">Subject<input id="flashcardSubject" list="subjectOptions" maxlength="60" required placeholder="Subject"></label>
+            <label for="flashcardChapter">Chapter<input id="flashcardChapter" list="materialChapterOptions" maxlength="120" required placeholder="Chapter"></label>
+            <label class="flashcard-wide" for="flashcardQuestion">Question<input id="flashcardQuestion" maxlength="500" required placeholder="Write a prompt to test recall"></label>
+            <label class="flashcard-wide" for="flashcardAnswer">Answer<textarea id="flashcardAnswer" maxlength="2000" rows="2" required placeholder="Write the answer"></textarea></label>
+            <div class="materials-form-actions flashcard-wide"><button id="flashcardSave" class="primary" type="submit">Add flashcard</button><button id="flashcardCancel" class="outline" type="button" hidden>Cancel edit</button></div>
+          </form>
+          <div class="flashcard-study-controls">
+            <label for="flashcardSubjectFilter">Subject<select id="flashcardSubjectFilter"><option value="">All subjects</option></select></label>
+            <label for="flashcardChapterFilter">Chapter<select id="flashcardChapterFilter"><option value="">All chapters</option></select></label>
+            <button id="flashcardShuffle" class="outline" type="button">Shuffle</button>
+          </div>
+          <div id="flashcardStudy" class="flashcard-study" hidden>
+            <div class="flashcard-display">
+              <small id="flashcardPosition"></small>
+              <b id="flashcardPrompt"></b>
+              <button id="flashcardReveal" class="textbutton" type="button">Show answer</button>
+              <p id="flashcardAnswerText" hidden></p>
+              <small id="flashcardMeta"></small>
+            </div>
+            <div class="flashcard-actions">
+              <button id="flashcardPrevious" class="outline" type="button">Previous</button>
+              <button id="flashcardUnknown" class="outline" type="button">Need practice</button>
+              <button id="flashcardKnown" class="primary" type="button">Known</button>
+              <button id="flashcardNext" class="outline" type="button">Next</button>
+            </div>
+            <div id="flashcardManageActions" class="materials-item-actions"></div>
+          </div>
+          <p id="flashcardEmpty" class="empty-copy">Add your first question-and-answer card to start a revision deck.</p>
+        </section>
+
+        <section class="materials-card question-bank" aria-labelledby="questionBankTitle">
+          <div class="materials-card-head"><div><p class="eyebrow">LOCAL QUESTION BANK</p><h3 id="questionBankTitle">Create practice questions</h3></div></div>
+          <p class="muted">Questions, answer keys, and explanations are stored locally and labeled student-created.</p>
+          <form id="questionForm" class="question-form">
+            <input id="questionId" type="hidden">
+            <label for="questionSubject">Subject<input id="questionSubject" list="subjectOptions" maxlength="60" required placeholder="Subject"></label>
+            <label for="questionChapter">Chapter<input id="questionChapter" list="materialChapterOptions" maxlength="120" required placeholder="Chapter"></label>
+            <label for="questionTopic">Topic <span class="optional-label">Optional</span><input id="questionTopic" maxlength="120" placeholder="e.g. Cell membrane"></label>
+            <label class="question-text" for="questionText">Question<textarea id="questionText" maxlength="500" rows="2" required placeholder="Enter a multiple-choice question"></textarea></label>
+            <label for="questionOption0">Option A<input id="questionOption0" maxlength="300" required></label>
+            <label for="questionOption1">Option B<input id="questionOption1" maxlength="300" required></label>
+            <label for="questionOption2">Option C<input id="questionOption2" maxlength="300" required></label>
+            <label for="questionOption3">Option D<input id="questionOption3" maxlength="300" required></label>
+            <label for="questionAnswer">Correct answer<select id="questionAnswer" required><option value="">Choose answer</option><option value="0">Option A</option><option value="1">Option B</option><option value="2">Option C</option><option value="3">Option D</option></select></label>
+            <label class="question-text" for="questionExplanation">Explanation <span class="optional-label">Optional</span><textarea id="questionExplanation" maxlength="1000" rows="2" placeholder="Explain why this answer is correct"></textarea></label>
+            <div class="materials-form-actions question-text"><button id="questionSave" class="primary" type="submit">Save question</button><button id="questionCancel" class="outline" type="button" hidden>Cancel edit</button></div>
+          </form>
+          <div id="questionBankList" class="question-bank-list"></div>
+        </section>
+
+        <section id="quiz-panel" class="materials-card quiz-panel" aria-labelledby="quizTitle">
+          <div class="materials-card-head"><div><p class="eyebrow">PRACTICE FROM YOUR SAVED QUESTIONS</p><h3 id="quizTitle">Take a quiz</h3></div></div>
+          <form id="quizFilter" class="quiz-filter">
+            <label for="quizSubject">Subject<select id="quizSubject"><option value="">All subjects</option></select></label>
+            <label for="quizChapter">Chapter<select id="quizChapter"><option value="">All chapters</option></select></label>
+            <button class="outline" type="submit">Load questions</button>
+          </form>
+          <p id="quizProgressStatus" class="planner-status" role="status" aria-live="polite"></p>
+          <form id="quizForm" hidden>
+            <p id="quizQuestionPosition" class="eyebrow"></p>
+            <div id="quizQuestions" class="quiz-questions"></div>
+            <div class="quiz-navigation"><button id="quizPrevious" class="outline" type="button">Previous</button><button id="quizNext" class="outline" type="button">Next</button><button class="primary" type="submit">Finish quiz</button></div>
+          </form>
+          <div id="quizResult" class="quiz-result" role="status" aria-live="polite" hidden></div>
+          <div id="quizAttempts" class="quiz-attempts"></div>
+        </section>
+
+        <section class="materials-card revision-helper" aria-labelledby="revisionHelperTitle">
+          <div class="materials-card-head"><div><p class="eyebrow">DETERMINISTIC · COMPLETELY OFFLINE</p><h3 id="revisionHelperTitle">Study next</h3></div></div>
+          <p class="muted">Recommendations are sorted locally from your saved topics, revision flags, upcoming subject exams, and available daily study time. No online AI model is used.</p>
+          <div id="revisionRecommendations" class="revision-recommendations"></div>
+        </section>
+      </section>
+
+      <section class="overview-grid">
+        <article class="panel glass deadline-panel">
+          <div class="panelhead">
+            <div><p class="eyebrow">UP NEXT</p><h2>Upcoming deadlines</h2></div>
+            <a class="subtle-link" href="#calendar-panel">View calendar <span aria-hidden="true">→</span></a>
+          </div>
+          <div id="deadlines" class="deadline-list" aria-live="polite"></div>
+          <p id="deadlineEmpty" class="empty-copy" hidden>No upcoming deadlines. Enjoy the breathing room.</p>
+        </article>
+
+        <article id="focus-panel" class="panel glass focus-panel">
+          <div class="panelhead">
+            <div><p class="eyebrow">DEEP WORK</p><h2>Focus timer</h2></div>
+            <span class="bubble purple" aria-hidden="true">◷</span>
+          </div>
+          <div id="timer" class="timer" role="timer" aria-live="off">25:00</div>
+          <p class="timer-note">Runs in this tab and resets if you close or reload it.</p>
+          <p id="focusSessionSummary" class="timer-note">No completed study sessions recorded yet.</p>
           <label class="inline-field" for="focusDuration">Session length
             <select id="focusDuration"><option value="25">25 minutes</option><option value="45">45 minutes</option><option value="50">50 minutes</option><option value="60">60 minutes</option></select>
           </label>
@@ -64,37 +485,50 @@
             <button id="timerPause" class="outline" type="button" disabled>Pause</button>
             <button id="timerReset" class="outline" type="button">Reset</button>
           </div>
-          <p id="timerStatus" class="hint">A completed focus session is saved to your study report.</p>
+          <p id="timerStatus" class="hint" role="status">A completed focus session is added to your study report.</p>
         </article>
+      </section>
 
-        <article class="panel goal-panel">
-          <div class="panelhead"><div><p class="eyebrow">BUILD A HABIT</p><h2>Weekly study goal</h2></div><span class="bubble green">↗</span></div>
-          <p class="goal-value"><b id="weeklyTime">0 min</b><span id="weeklyGoalLabel">of 10 hours</span></p>
-          <div class="track"><div id="goalBar"></div></div>
-          <p class="hint" id="goalHint">Set a goal that works for you.</p>
+      <section id="dashboard-activity" class="dashboard-activity" aria-label="Calendar and recent study activity">
+      <section class="tools-grid">
+        <article class="panel glass goal-panel">
+          <div class="panelhead"><div><p class="eyebrow">BUILD A HABIT</p><h2>Weekly study goal</h2></div><span class="bubble green" aria-hidden="true">↗</span></div>
+          <p class="goal-value"><b id="weeklyTime">—</b><span id="weeklyGoalLabel">Loading goal…</span></p>
+          <div class="track" role="progressbar" aria-label="Weekly study goal progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="goalBar"></div></div>
+          <p class="hint" id="goalHint">Loading your weekly report…</p>
           <form id="goalForm" class="goal-form">
             <label for="weeklyGoal">Goal (hours per week)</label>
             <div><input id="weeklyGoal" type="number" min="1" max="168" step="0.5" required><button class="outline" type="submit">Save goal</button></div>
           </form>
-          <p class="streak"><span>🔥</span> <b id="streak">0 day</b> study streak</p>
+          <p class="streak"><span aria-hidden="true">✦</span> <b id="streak">—</b> study streak</p>
+        </article>
+
+        <article class="panel glass report-panel">
+          <div class="panelhead"><div><p class="eyebrow">YOUR CONSISTENCY</p><h2>Seven-day report</h2></div><span class="bubble cyan" aria-hidden="true">▥</span></div>
+          <div id="reportChart" class="report-chart" role="img" aria-label="Study minutes for the last seven days">Loading study report…</div>
         </article>
       </section>
 
-      <section class="panel calendar-panel">
+      <section id="calendar-panel" class="panel glass calendar-panel">
         <div class="panelhead">
           <div><p class="eyebrow">SEE WHAT'S AHEAD</p><h2>Study calendar</h2></div>
-          <div class="calendar-controls"><button id="prevMonth" class="outline compact" type="button" aria-label="Previous month">‹</button><b id="monthLabel"></b><button id="nextMonth" class="outline compact" type="button" aria-label="Next month">›</button></div>
+          <div class="calendar-controls">
+            <button id="prevMonth" class="outline compact" type="button" aria-label="Previous month">‹</button>
+            <b id="monthLabel"></b>
+            <button id="nextMonth" class="outline compact" type="button" aria-label="Next month">›</button>
+          </div>
         </div>
         <div class="calendar-layout">
-          <div class="calendar-grid" id="calendar"></div>
+          <div class="calendar-grid" id="calendar" aria-label="Study task deadline calendar"></div>
           <div class="day-agenda"><h3 id="agendaTitle">Select a day</h3><div id="agenda"></div></div>
         </div>
       </section>
+      </section>
 
       <section class="grid">
-        <div class="panel">
+        <div id="tasks-panel" class="panel glass task-panel">
           <div class="panelhead">
-            <div><p class="eyebrow">STAY ON TRACK</p><h2>Your study tasks</h2></div>
+            <div><p class="eyebrow">STAY ON TRACK</p><h2>Your study tasks</h2><small id="taskSummary" class="task-summary">Tasks load from your local planner.</small></div>
             <button class="primary" id="add" type="button">＋ Add task</button>
           </div>
           <div class="filters">
@@ -102,40 +536,31 @@
             <select id="subjectFilter" aria-label="Filter by subject"><option value="all">All subjects</option></select>
             <select id="statusFilter" aria-label="Filter by completion"><option value="all">All tasks</option><option value="pending">Pending</option><option value="completed">Completed</option></select>
           </div>
-          <div id="tasks" class="tasks"></div>
-          <div id="empty" class="empty"><span>✎</span><h3>No tasks found</h3><p>Add a study task to get started.</p><button class="primary" id="emptyAdd" type="button">Create a task</button></div>
+          <div id="tasks" class="tasks" aria-live="polite" aria-busy="true"><p class="loading-state">Loading your study plan…</p></div>
+          <div id="empty" class="empty" hidden><span aria-hidden="true">✦</span><h3>No tasks found</h3><p>Add a study task to get started.</p><button class="primary" id="emptyAdd" type="button">Create a task</button><button class="outline" id="retryLoad" type="button" hidden>Try again</button></div>
         </div>
 
-        <aside class="panel">
-          <div class="panelhead"><div><p class="eyebrow">QUICK NOTE</p><h2>Study notes</h2></div><span class="bubble purple">✎</span></div>
-          <p class="muted">Notes save in your local SQLite database.</p>
-          <textarea id="notes" rows="7" maxlength="10000" placeholder="Remember to revise Unit 2…"></textarea>
-          <small id="noteStatus">Loading notes…</small>
-          <div class="tip">💡 <div><b>Study tip</b><p>Try a 25-minute focus session, then take a short break.</p></div></div>
+        <aside id="notes-panel" class="panel glass notes-panel">
+          <div class="panelhead"><div><p class="eyebrow">QUICK NOTE</p><h2>Study notes</h2></div><span class="bubble purple" aria-hidden="true">✎</span></div>
+          <p class="muted">Your notes are saved to your planner database.</p>
+          <textarea id="notes" rows="7" maxlength="10000" placeholder="Remember to revise Unit 2…" aria-label="Study notes"></textarea>
+          <small id="noteStatus" role="status" aria-live="polite">Loading notes…</small>
+          <div class="tip"><span aria-hidden="true">✦</span><div><b>Study tip</b><p>Try a 25-minute focus session, then take a short break.</p></div></div>
           <button class="outline full" id="export" type="button">⇩ Export full backup (JSON)</button>
           <label class="outline full import">⇧ Import backup (JSON)<input id="import" type="file" accept=".json,application/json" hidden></label>
           <button class="textbutton" id="clear" type="button">Clear completed tasks</button>
-          <div class="subject-manager">
-            <h3>My subjects</h3>
-            <form id="subjectForm"><label class="sr-only" for="newSubject">New subject</label><input id="newSubject" maxlength="60" placeholder="Add a subject"><button class="outline" type="submit">Add</button></form>
-            <div id="subjects" class="subject-list"></div>
-          </div>
         </aside>
       </section>
 
-      <section class="panel exams-panel">
-        <div class="panelhead"><div><p class="eyebrow">PREPARE WITH CONFIDENCE</p><h2>Exam timetable</h2></div><button class="primary" id="addExam" type="button">＋ Add exam</button></div>
-        <div id="exams" class="exam-list"></div>
-        <p id="examEmpty" class="muted">No upcoming exams added yet.</p>
-      </section>
-
-      <section class="panel report-panel">
-        <div class="panelhead"><div><p class="eyebrow">YOUR CONSISTENCY</p><h2>Seven-day study report</h2></div><span class="bubble orange">▥</span></div>
-        <div id="reportChart" class="report-chart" role="img" aria-label="Study minutes for the last seven days"></div>
+      <section id="exams-panel" class="panel glass exams-panel">
+        <div class="panelhead"><div><p class="eyebrow">PREPARE WITH CONFIDENCE</p><h2>Upcoming exams</h2><p class="muted">Keep exam dates and days remaining in one place.</p></div><button class="primary" id="addExam" type="button">＋ Add exam</button></div>
+        <div id="exams" class="exam-list"><p class="loading-state">Loading exams…</p></div>
+        <p id="examEmpty" class="empty-copy" hidden>No upcoming exams added yet.</p>
       </section>
       <datalist id="subjectOptions"></datalist>
-      <footer>StudyFlow · Private local SQLite storage · Works without internet on this device</footer>
+      <footer>StudyFlow · Your study plan, all in one place</footer>
     </main>
+    </div>
 
     <dialog id="dialog">
       <form id="form">
@@ -160,7 +585,20 @@
         <div class="dialogactions"><button type="button" id="examCancel" class="outline">Cancel</button><button class="primary">Save exam</button></div>
       </form>
     </dialog>
+    <dialog id="syllabusDialog">
+      <form id="syllabusEditForm">
+        <div class="dialoghead"><div><p class="eyebrow">YOUR SYLLABUS</p><h2 id="syllabusDialogTitle">Edit syllabus item</h2></div><button id="syllabusDialogClose" type="button" class="close" aria-label="Close">×</button></div>
+        <input id="syllabusDialogAction" type="hidden">
+        <input id="syllabusDialogId" type="hidden">
+        <input id="syllabusDialogSubject" type="hidden">
+        <label for="syllabusDialogValue"><span id="syllabusDialogLabel">Title</span>
+          <input id="syllabusDialogValue" required maxlength="120" autocomplete="off">
+        </label>
+        <div class="dialogactions"><button id="syllabusDialogCancel" type="button" class="outline">Cancel</button><button class="primary" type="submit">Save</button></div>
+      </form>
+    </dialog>
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
-    <script src="/app.js" defer></script>
+    <script src="/study-plan-engine.js?v=4" defer></script>
+    <script src="/app.js?v=25" defer></script>
   </body>
 </html>
